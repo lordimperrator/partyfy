@@ -1,1 +1,1 @@
-"# partyfy" 
+Simple Spotify Extension for Partys
