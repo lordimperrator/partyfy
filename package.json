@@ -1,0 +1,21 @@
+{
+  "name": "partyfy",
+  "version": "1.0.0",
+  "description": "Spotify for Partys",
+  "main": "partyfy.js",
+  "dependencies": {
+    "asyncawait": "^1.0.7",
+    "express": "^4.16.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "spotify-web-api-node": "^4.0.0",
+    "swig-templates": "^2.0.3",
+    "sync-request": "^6.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node partyfy.js"
+  },
+  "author": "Moritz",
+  "license": "ISC"
+}
