@@ -22,8 +22,22 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }			
 
-.form-control{
+.form-control{	
 	color: black;
+}
+
+button{
+	align-content: left;
+}
+
+#btn{
+	background-color: transparent;
+	background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+	outline:none;
+	text-align: left;
 }
 
 .form-horizontal{

@@ -32,7 +32,6 @@ function get_accesstoken(callback){
 
 function search(search_term, callback){
     get_accesstoken(function(access_token){
-        console.log(access_token)
         search_request(search_term, access_token, function(result){
             return callback(result)
         })
@@ -40,7 +39,6 @@ function search(search_term, callback){
 }
 
 function search_request(search_term, access_token, callback){
-    console.log(access_token);  
     request({
         url: "https://api.spotify.com/v1/search",
         method: "GET",
@@ -62,19 +60,22 @@ function search_request(search_term, access_token, callback){
     }) 
 }
 
-app.get("/", async function(req, res) {
-    console.log(req.query.search_term)
+app.get("/", function(req, res) {
     if(req.query.search_term != null && req.query.search_term != ""){
        search(req.query.search_term, function(result){
             res.render("partyfy", {"items" : result.tracks.items}) 
-            console.log(result.tracks.items[0].album.images[0])
+            console.log(result.tracks.items)
          })  
     }
     else{
         res.render("partyfy", {"items" : null})
-    }
-    
-   
+    }  
+})
+
+app.post("/", function(req, res){
+    console.log("OKK")
+    console.log(req.body)
+    res.render("partyfy", {"items" : null})
 })
 
 app.listen(3000, function(){
