@@ -11,7 +11,7 @@ app.engine('html', swig.renderFile);
 app.set('view engine', 'html')
 app.set('views', __dirname + '\\views');
 
-function get_accesstoken(search_term, res){
+function get_accesstoken(callback){
     request({
     url: "https://accounts.spotify.com/api/token",
     method : "Post",
@@ -25,15 +25,20 @@ function get_accesstoken(search_term, res){
     }, 
     function(error, response, body){
     var accesstoken = body.access_token
-    search_request(search_term, res, accesstoken)
+    return callback(body.access_token)
 })    
 }
 
-function search(search_term, res){
-    get_accesstoken(search_term, res)
+function search(search_term, callback){
+    get_accesstoken(function(access_token){
+        console.log(access_token)
+        search_request(search_term, access_token, function(result){
+            return callback(result)
+        })
+    })
 }
 
-function search_request(search_term, res, access_token){
+function search_request(search_term, access_token, callback){
     console.log(access_token);  
     request({
         url: "https://api.spotify.com/v1/search",
@@ -46,29 +51,24 @@ function search_request(search_term, res, access_token){
         },
         qs :
         {
-            "q" : "Ding",
+            "q" : search_term,
             "type" : "track",
-            "limit" : 5,
+            "limit" : 20,
             "market" : "DE",
         }    
     },function(error, response, body){
-       //console.log(body.tracks.items)
-       for(i in body.tracks.items){
-           console.log(body.tracks.items[i].name)
-           for(k in body.tracks.items[i].artists){
-            console.log(body.tracks.items[i].artists[k].name)
-           }
-           console.log(body.tracks.items[i].album.images[0].url)
-           console.log("OK")
-           res.render('partyfy',{'Searchterm': "Seeeeeed"})
-          
-       }
+       return callback(body)
     }) 
 }
 
 app.get("/", async function(req, res) {
-    search(req.query.search_term, res)   
-    console.log()
+    console.log(req.query.search_term)
+    search(req.query.search_term, function(result){
+        res.render("partyfy", {"items" : result.tracks.items}) 
+        console.log(result.tracks.items[0].album.images[0])
+    })  
+    
+   
 })
 
 app.listen(3000, function(){

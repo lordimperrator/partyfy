@@ -1,13 +1,19 @@
 <html>
     <head>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <title>Partyfy</title>
     </head>
     <body>
-        <h1>Partyfy Search:</h1>
+        <div class="jumbotron text-center">
+            <h1>Partyfy Search:</h1>
+        </div>
         <form method="GET">
             Searchterm: <input type="text" name="search_term" value=""></input><br>
             <input type="submit" value="search"></input>
         </form>
-        <h2>{{ Searchterm }}</h2>
+        {% for item in items %}
+        <h3>{{ item.name }} - {{ item.artists[0].name}}</h3>
+        <image src={{item.album.images[0].url}} width="200" height="200"></image>
+        {% endfor %}
     </body>
 </html>
