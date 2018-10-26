@@ -10,6 +10,7 @@ var clientSecret = 'f0eb85659b3149c082893cd58aa3f9ec'
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html')
 app.set('views', __dirname + '\\views');
+app.use(express.static('public'))
 
 function get_accesstoken(callback){
     request({
@@ -63,10 +64,15 @@ function search_request(search_term, access_token, callback){
 
 app.get("/", async function(req, res) {
     console.log(req.query.search_term)
-    search(req.query.search_term, function(result){
-        res.render("partyfy", {"items" : result.tracks.items}) 
-        console.log(result.tracks.items[0].album.images[0])
-    })  
+    if(req.query.search_term != null && req.query.search_term != ""){
+       search(req.query.search_term, function(result){
+            res.render("partyfy", {"items" : result.tracks.items}) 
+            console.log(result.tracks.items[0].album.images[0])
+         })  
+    }
+    else{
+        res.render("partyfy", {"items" : null})
+    }
     
    
 })

@@ -1,15 +1,34 @@
 .jumbotron {
-    background-image: url("/img/party_background.jpg");
-    background-size: cover;
+	background-image: linear-gradient(to bottom,rgba(38,38,38,0),rgba(38,38,38,0.8)),url("/img/party_background.jpg");
+	background-size: cover;
     text-align: center;
-	color: 		#f7f7a1;
-	font-family: 'Open Sans', sans-serif;
-	font-style: bold;
-	text-shadow: 0 0 5px black;
+	font-family: 'Open Sans', sans-serif;	
+	background-blend-mode:darken;
+	height: 450px;
+}
+h1{
+	color: 		white;
+	text-shadow: 0 0 5px white;
+	font-style: bold;	
+}
+
+h3{
+	color: rgb(235, 235, 235);
 }
 
 body {
-	background-color: #262626;
+	background-color: rgb(38, 38, 38);
 	color: white;
 	font-family: 'Open Sans', sans-serif;
 }			
+
+.form-control{
+	color: black;
+}
+
+.form-horizontal{
+	position: relative;
+	top: 30%;
+	bottom: 0%;
+	height: 30%;	
+}
