@@ -5,6 +5,7 @@
   "main": "partyfy.js",
   "dependencies": {
     "asyncawait": "^1.0.7",
+    "body-parser": "^1.18.3",
     "bootstrap": "^3.3.7",
     "express": "^4.16.4",
     "request": "^2.88.0",
