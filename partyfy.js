@@ -1,7 +1,8 @@
 var request = require('request')
 var express = require('express')
 var swig = require('swig-templates')
-var bodyParser = require("body-parser");
+var bodyParser = require("body-parser")
+var mysql = require('mysql')
  
 // credentials are optional
 var app = express()
@@ -16,7 +17,12 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
  
-
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "webserver",
+    password: "12345678",
+    database: "webserver"
+});
 
 function get_accesstoken(callback){
     request({
@@ -143,6 +149,17 @@ function add_track_toPlaylist(token, playlist_id, song_id){
     })
 }
 
+function add_track_toWishlist(track_name, track_artist, track_uri){
+    con.connect(function(err) {
+        if(err) throw err
+        console.log("Connected!")
+        var query = "INSERT INTO wishlist_song (wishlist_song_name, wishlist_song_artist, wishlist_song_uri) VALUES('"+ track_name +"', '"+ track_artist +"', '"+ track_uri +"')"
+        con.query(query, function(err, result){
+            console.log("added")
+        })
+    })
+}
+
 
 
 var archived_result;
@@ -168,8 +185,8 @@ app.post("/", function(req, res){
     }else{
         res.render("partyfy", {"items" : null})
     }
-    var playlist_id = queue_playlist.uri.slice(queue_playlist.uri.lastIndexOf(":") + 1,queue_playlist.uri.length)
-    add_track_toPlaylist(access_token,playlist_id,req.body.song_id)
+    //var playlist_id = queue_playlist.uri.slice(queue_playlist.uri.lastIndexOf(":") + 1,queue_playlist.uri.length)
+    add_track_toWishlist(req.body.song_name, req.body.song_artist, req.body.song_id)
 })
 
 app.listen(3000, function(){
@@ -177,7 +194,7 @@ app.listen(3000, function(){
 })
 
 var queue_playlist
-var access_token;
+var access_token
 
 app.get("/playback", function(req, res){
     var authcode = req.query.code;
@@ -190,7 +207,7 @@ app.get("/playback", function(req, res){
             create_playlist(access_token, result.id, function(result){
                 queue_playlist = result;
                 var playlist_id = result.uri.slice(result.uri.lastIndexOf(":") + 1,result.uri.length)
-                add_track_toPlaylist(access_token, playlist_id, "spotify:track:5LH1z4ma2TN2aVeESXthj9")
+                
             })
         })
     })
