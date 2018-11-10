@@ -4,6 +4,7 @@
   "description": "Spotify for Partys",
   "main": "partyfy.js",
   "dependencies": {
+    "autoprefixer": "^9.3.1",
     "body-parser": "^1.18.3",
     "bootstrap": "^3.3.7",
     "bootstrap-scss": "^4.1.3",

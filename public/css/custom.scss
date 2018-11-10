@@ -1,0 +1,191 @@
+@import "../../node_modules/bootstrap-scss/bootstrap";
+
+
+.jumbotron {
+	background-image: linear-gradient(to bottom,rgba(38,38,38,0),rgba(38,38,38,0.8)),url("/img/party_background.jpg");
+	background-size: cover;
+    text-align: center;
+	font-family: 'Open Sans', sans-serif;	
+	background-blend-mode:darken;
+    height: 100%;
+    border-radius: 0rem;
+    padding: 0px;
+    margin-bottom: 0px;
+}
+#Partyfy_title{
+    text-align: center;    
+	color: 	white;
+	text-shadow: 0 0 5px white;
+    font-style: bold;	
+    font-size: 9em;
+}
+
+#Partyfy_subtitle{
+    color: white;
+    font-size: 2em
+}
+
+#headline{
+    position: absolute;
+    text-align: center;
+    top: 10%;
+    width: 100%;
+}   
+
+h3{
+	color: rgb(235, 235, 235);
+}
+
+body {
+	background-color: rgb(38, 38, 38);
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+}			
+
+.form-control{	
+	color: black;
+}
+
+#search_text{
+    display: block;
+    margin-right: 5px;
+}
+
+#search_button{
+    display: block;
+}
+#search_bar{
+    display:flex;
+    flex-direction: row;
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    top: 60%;
+}
+
+#result_container{
+    margin-left: 10%;
+}
+
+#host_body{
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+	background-image: linear-gradient(to bottom,rgba(38,38,38,0),rgba(38,38,38,0.8)),url("/img/party_background.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+    background-position: center;
+    height: 100%;
+	background-color: rgb(38, 38, 38);
+}
+
+#setup_container{ 
+    position: absolute;
+    opacity: 0.7;
+    height: 100%;
+    width: 100%;
+    border-radius: 0px 0px 0px 0px;
+	background-color: rgb(225,225,255);
+    color: black;
+    text-align: center;
+	font-family: 'Open Sans', sans-serif;	
+}
+
+#head_text{
+    margin-top: 10px;
+    color: rgb(50, 50, 50);
+}
+
+#host_button{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+@include media-breakpoint-up(sm) {
+    #setup_container{ 
+        border-radius: 20px 20px 20px 20px;  
+        position: absolute;
+        opacity: 0.9;
+        top: 10%;  
+        right: 10%;
+        left: 10%;
+        width: 80%;
+        height: 80%;
+    }
+    #head_text{
+        font-size: 3.5em;
+    }
+    #Partyfy_title{
+        font-size: 9em;
+    }
+    #Partyfy_subtitle{
+        font-size: 2em;
+    }
+  }
+
+@include media-breakpoint-up(md) {
+    #setup_container{   
+        opacity: 0.9;
+        border-radius: 20px 20px 20px 20px;
+        position: absolute;
+        left: 20%;
+        right: 20%;
+        top: 10%;
+        width: 60%;
+        height: 80%;
+    }
+    #head_text{
+        font-size: 3.5em;
+    }
+    #Partyfy_title{
+        font-size: 10em;
+    }
+    #Partyfy_subtitle{
+        font-size: 2.5em;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    #setup_container{   
+        opacity: 0.9;
+        border-radius: 20px 20px 20px 20px;
+        position: absolute;
+        left: 30%;
+        right: 30%;
+        top: 10%;
+        width: 40%;
+        height: 80%;
+    }
+    #head_text{
+        font-size: 3.5em;
+    }
+    #Partyfy_title{
+        font-size: 12em;
+    }
+    #Partyfy_subtitle{
+        font-size: 3em;
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    #setup_container{   
+        opacity: 0.9;
+        border-radius: 20px 20px 20px 20px;
+        position: absolute;
+        left: 30%;
+        right: 30%;
+        top: 10%;
+        width: 40%;
+        height: 80%;
+    }
+    #head_text{
+        font-size: 4.5em;
+    }
+    #Partyfy_title{
+        font-size: 15em;
+    }
+    #Partyfy_subtitle{
+        font-size: 4em;
+    }
+}
