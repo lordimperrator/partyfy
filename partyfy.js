@@ -24,6 +24,10 @@ var con = mysql.createConnection({
 	database: "webserver"
 });
 
+con.connect(function(err) {
+	if(err) throw err
+})
+
 function get_accesstoken(callback){
 	request({
 	url: "https://accounts.spotify.com/api/token",
@@ -55,7 +59,7 @@ function get_user_token(token, callback){
 		{
 			grant_type : "authorization_code",
 			code : token ,
-			redirect_uri : "http://localhost:3000/playback"
+			redirect_uri : "http://localhost:3000/host"
 		}
 	}, function(error, response, body){
 		return callback(body)
@@ -108,6 +112,21 @@ function search_request(search_term, access_token, callback){
 	}) 
 }
 
+function get_user_devices(access_token, callback){
+	request({
+		url: "https://api.spotify.com/v1/me/player/devices",
+		method: "GET",
+		json: true,
+		headers:
+		{
+			"Authorization" : "Bearer " + access_token,
+			"Content-Type" : "application/json"
+		}},function(error, response, result){
+			callback(result)
+		}
+	)
+}
+
 function create_playlist(token, user_id, callback){
 	request({
 		url: "https://api.spotify.com/v1/users/" + user_id + "/playlists",
@@ -158,6 +177,31 @@ function add_track_toWishlist(track_name, track_artist, track_uri){
 			console.log("added")
 		})
 	})
+}
+
+function validate_host_data(username, email, callback){
+		if(username == ""){
+			var compare_result = "EmptyUsername"
+			callback(compare_result)
+			return
+		}
+		if(email == ""){
+			var compare_result = "EmptyEmail"
+			callback(compare_result)
+			return
+		}
+		var query = "SELECT wishlist_user_name, wishlist_user_email FROM wishlist_user WHERE wishlist_user_name = '"+ username +"' OR wishlist_user_email = '"+ email +"'"
+		con.query(query, function(err, result, fields){
+			if(result.length == 0){
+				var compare_result = "OK"
+			}else{
+				if(result[0].wishlist_user_name == username)
+				var compare_result = "Username"
+				if(result[0].wishlist_user_email == email)
+				var compare_result = "Email"
+			}			
+			callback(compare_result)
+		})
 }
 
 
@@ -214,12 +258,55 @@ app.get("/playback", function(req, res){
 })
 
 app.get("/host", function(req, res){
-	res.render("host", )
+	console.log(req.query.code)
+	if(req.query.code != undefined){
+		get_user_token(req.query.code, function(result){        
+			console.log(result.access_token)
+			access_token = result.access_token
+			get_user_devices(access_token,function(result){
+				console.log(result)
+				res.render("host_device", {"alert" : false})
+			})			
+		})		
+	}else{
+		res.render("host", {"alert" : false})
+	}
+})
+
+var redirect_uri = "http://localhost:3000/host"
+
+app.post("/host", function(req,res){
+	if(req.body.submit_spotify){
+		validate_host_data(req.body.host_username, req.body.host_email,function(state){
+			if(state == "OK"){
+				var scopes = 'user-read-private user-read-email user-read-birthdate playlist-modify-public playlist-modify-private user-read-playback-state';
+				res.redirect('https://accounts.spotify.com/authorize' +
+				'?response_type=code' +
+				'&client_id=' + clientId +
+				(scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+				'&redirect_uri=' + encodeURIComponent(redirect_uri));
+			}else{
+				if(state == "Username"){
+					res.render("host", {"alert" : true, "error" : "Username is already taken"})
+				}
+				if(state == "EmptyUsername"){
+					res.render("host", {"alert" : true, "error" : "Not a valid username"})
+				}
+				if(state == "EmptyEmail"){
+					res.render("host", {"alert" : true, "error" : "Not a valid email"})
+				}
+				if(state == "Email"){
+					res.render("host", {"alert" : true, "error" : "Email is already taken"})
+				}
+			}
+		})
+	}
+	
 })
 
 
 
-var redirect_uri = "http://localhost:3000/playback"
+
 
 app.get("/login", function(req, res){
 	var scopes = 'user-read-private user-read-email user-read-birthdate playlist-modify-public playlist-modify-private';

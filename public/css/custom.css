@@ -8692,7 +8692,7 @@ body {
 
 #setup_container {
   position: absolute;
-  opacity: 0.7;
+  opacity: 0.8;
   height: 100%;
   width: 100%;
   border-radius: 0px 0px 0px 0px;
@@ -8702,8 +8702,60 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+#host_information {
+  color: #323232;
+  font-size: 1.2em;
+  margin-top: 5%;
+  margin-right: 7.5%;
+  margin-left: 7.5%;
+}
+
+#host_formular {
+  margin-top: 10%;
+  color: #505050;
+  font-size: 1.2em;
+}
+
+#host_input {
+  width: 60%;
+  margin-top: 5%;
+  font-size: 1.5em;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  border-bottom: 1px solid #323232;
+}
+
+#host_input:focus {
+  color: #323232;
+}
+
+#host_spotify_btn {
+  margin-top: 10%;
+  display: inline-block;
+  background: url("/img/spotify_logo.png");
+  background-repeat: no-repeat;
+  background-color: #282828;
+  background-size: contain;
+  background-position-x: right;
+  color: #fafafa;
+  border: none;
+  height: 6.5%;
+  font-size: 1.5em;
+}
+
+#host_spotify_btn:hover {
+  color: #1ed760;
+}
+
+#host_alert {
+  margin-top: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  font-size: 1.2em;
+}
+
 #head_text {
-  margin-top: 10px;
+  margin-top: 25px;
   color: #323232;
 }
 
@@ -8736,6 +8788,10 @@ body {
   #Partyfy_subtitle {
     font-size: 2em;
   }
+
+  #host_information {
+    font-size: 1.2em;
+  }
 }
 @media (min-width: 768px) {
   #setup_container {
@@ -8759,6 +8815,10 @@ body {
 
   #Partyfy_subtitle {
     font-size: 2.5em;
+  }
+
+  #host_information {
+    font-size: 1.3em;
   }
 }
 @media (min-width: 992px) {
@@ -8784,6 +8844,10 @@ body {
   #Partyfy_subtitle {
     font-size: 3em;
   }
+
+  #host_information {
+    font-size: 1.5em;
+  }
 }
 @media (min-width: 1200px) {
   #setup_container {
@@ -8807,6 +8871,10 @@ body {
 
   #Partyfy_subtitle {
     font-size: 4em;
+  }
+
+  #host_information {
+    font-size: 1.5em;
   }
 }
 
