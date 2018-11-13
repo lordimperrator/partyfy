@@ -8672,6 +8672,8 @@ body {
   left: 10%;
   width: 80%;
   top: 60%;
+  font-size: 1.5em;
+  height: 20px;
 }
 
 #result_container {
@@ -8765,13 +8767,31 @@ body {
   right: 10px;
 }
 
+#host_btn_next {
+  margin-top: 20%;
+  background: url("/img/next.png");
+  background-color: #282828;
+  background-size: contain;
+  background-position-x: left;
+  background-repeat: no-repeat;
+  height: 10%;
+  width: 20%;
+  border: none;
+  font-display: none;
+  font-size: 0em;
+}
+
 .radio-devices input[type=radio] {
   display: none;
 }
 
 .radio-devices label {
   display: block;
+  background: url("/img/speaker.png");
   background-color: #282828;
+  background-size: contain;
+  background-position-x: left;
+  background-repeat: no-repeat;
   border: solid 2px #282828;
   margin-left: 20%;
   margin-right: 20%;

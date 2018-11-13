@@ -61,6 +61,8 @@ body {
     left: 10%;
     width: 80%;
     top: 60%;
+    font-size: 1.5em;
+    height: 20px;
 }
 
 #result_container{
@@ -153,8 +155,18 @@ body {
     right: 10px;
 }
 
-.radio-devices{
-    
+#host_btn_next{
+    margin-top: 20%;
+    background: url("/img/next.png");
+    background-color: rgb(40, 40, 40);    
+    background-size: contain;
+    background-position-x: left;
+    background-repeat: no-repeat;
+    height: 10%;
+    width: 20%;
+    border:none;
+    font-display: none;
+    font-size: 0em;
 }
 
 .radio-devices input[type="radio"]{
@@ -163,7 +175,11 @@ body {
 
 .radio-devices label{
     display: block;
-    background-color: rgb(40,40,40);
+    background: url("/img/speaker.png");
+    background-color: rgb(40,40,40);    
+    background-size: contain;
+    background-position-x: left;
+    background-repeat: no-repeat;
     border: solid 2px rgb(40,40,40); 
     margin-left: 20%;
     margin-right: 20%;
@@ -174,7 +190,7 @@ body {
 }
 
 .radio-devices input[type="radio"]:checked + label{
-    border: solid 2px rgb(30,215,96);  
+    border: solid 4px rgb(30,215,96);  
 }
 
 @include media-breakpoint-up(sm) {
