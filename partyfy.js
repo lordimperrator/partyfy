@@ -3,10 +3,13 @@ var express = require('express')
 var swig = require('swig-templates')
 var bodyParser = require("body-parser")
 var mysql = require('mysql')
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
+var datetime = require('node-datetime')
  
 // credentials are optional
 var app = express()
-var  clientId = 'a4053a069ef047e2a10c49745a218670'
+var clientId = 'a4053a069ef047e2a10c49745a218670'
 var clientSecret = 'f0eb85659b3149c082893cd58aa3f9ec'
 
 app.engine('html', swig.renderFile);
@@ -16,6 +19,8 @@ app.use(express.static('public'))
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser())
+app.use(session({secret: "12345678"}))
  
 var con = mysql.createConnection({
 	host: "localhost",
@@ -63,6 +68,24 @@ function get_user_token(token, callback){
 		}
 	}, function(error, response, body){
 		return callback(body)
+	})
+}
+
+function save_user_data(username, email, authtoken, authcode){
+	var query = "INSERT INTO wishlist_user (wishlist_user_name, wishlist_user_email) VALUES('"+ username +"', '"+ email + "')"
+	con.query(query, function(err, result){
+		console.log(result.insertId)
+		var user_id_fk = result.insertId
+		get_userid(authcode,function(result){
+			var dt = datetime.create((Date.now() + 3000))
+			var formatteddate = dt.format('Y-m-d H:M:S')
+			console.log(formatteddate)
+			var query = `INSERT INTO wishlist_spotifydata (wishlist_spotifyusername, wishlist_spotifyuserid, wishlist_spotifyauthtoken, wishlist_spotifyusertoken, wishlist_spotifyusertokenexpire, wishlist_user_id_fk)
+				VALUES('`+ result.display_name +`','`+ result.id +`','`+ authtoken +`','`+ authcode +`','`+ formatteddate +`','`+user_id_fk+`')`
+			con.query(query, function(err, result){
+			console.log(query)
+			})
+		})				
 	})
 }
 
@@ -169,13 +192,9 @@ function add_track_toPlaylist(token, playlist_id, song_id){
 }
 
 function add_track_toWishlist(track_name, track_artist, track_uri){
-	con.connect(function(err) {
-		if(err) throw err
-		console.log("Connected!")
-		var query = "INSERT INTO wishlist_song (wishlist_song_name, wishlist_song_artist, wishlist_song_uri) VALUES('"+ track_name +"', '"+ track_artist +"', '"+ track_uri +"')"
-		con.query(query, function(err, result){
-			console.log("added")
-		})
+	var query = "INSERT INTO wishlist_song (wishlist_song_name, wishlist_song_artist, wishlist_song_uri) VALUES('"+ track_name +"', '"+ track_artist +"', '"+ track_uri +"')"
+	con.query(query, function(err, result){
+		console.log("added")
 	})
 }
 
@@ -263,9 +282,9 @@ app.get("/host", function(req, res){
 		get_user_token(req.query.code, function(result){        
 			console.log(result.access_token)
 			access_token = result.access_token
+			save_user_data(req.session.username, req.session.email,req.query.code,access_token)
 			get_user_devices(access_token,function(result){
-				console.log(result)
-				res.render("host_device", {"alert" : false})
+				res.render("host_device", {"alert" : false, "devices" : result.devices})
 			})			
 		})		
 	}else{
@@ -279,6 +298,8 @@ app.post("/host", function(req,res){
 	if(req.body.submit_spotify){
 		validate_host_data(req.body.host_username, req.body.host_email,function(state){
 			if(state == "OK"){
+				req.session.username = req.body.host_username
+				req.session.email = req.body.host_email
 				var scopes = 'user-read-private user-read-email user-read-birthdate playlist-modify-public playlist-modify-private user-read-playback-state';
 				res.redirect('https://accounts.spotify.com/authorize' +
 				'?response_type=code' +

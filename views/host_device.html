@@ -13,7 +13,9 @@
         <div id="setup_container">
             <h1 id="head_text">Host your own Partyfy!</h1>
             <p id="host_information">
-                
+                Pefect! You linked your Spotifyaccount to 
+                Partyfy.<br>Now it's time to select the device,
+                the music will be played from.
             </p>
             {% if alert %}
             <div class="alert alert-danger" id="host_alert">
@@ -21,7 +23,19 @@
             </div>               
             {% endif %}           
             <div id="host_formular">
-                
+                <form method="POST">
+                    <div class="radio-devices">
+                        {% for device in devices %}
+                            {% if loop.first %}
+                                <input type="radio" id="device{{loop.index}}" name="device" value="{{device.id}}" checked>                            
+                                <label for="device{{loop.index}}">{{device.name}}</label>          
+                            {% else %}   
+                                <input type="radio" id="device{{loop.index}}" name="device" value="{{device.id}}">                            
+                                <label for="device{{loop.index}}">{{device.name}}</label>             
+                            {% endif %}
+                        {% endfor %}
+                    </div>             
+                </form>
             </div>
         </div>         
     </body>    

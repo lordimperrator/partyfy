@@ -153,6 +153,30 @@ body {
     right: 10px;
 }
 
+.radio-devices{
+    
+}
+
+.radio-devices input[type="radio"]{
+   display: none;
+}  
+
+.radio-devices label{
+    display: block;
+    background-color: rgb(40,40,40);
+    border: solid 2px rgb(40,40,40); 
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 2.5%;
+    height: 10%;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.radio-devices input[type="radio"]:checked + label{
+    border: solid 2px rgb(30,215,96);  
+}
+
 @include media-breakpoint-up(sm) {
     #setup_container{ 
         border-radius: 20px 20px 20px 20px;  
