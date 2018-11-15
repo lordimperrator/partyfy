@@ -8802,7 +8802,26 @@ body {
 }
 
 .radio-devices input[type=radio]:checked + label {
-  border: solid 2px #1ed760;
+  border: solid 4px #1ed760;
+}
+
+#host_playlist_select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: 0;
+  width: 60%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  height: 60%;
+}
+
+#host_playlist_option {
+  height: 10%;
+  width: 100%;
+  background-color: #282828;
+  color: white;
 }
 
 @media (min-width: 576px) {

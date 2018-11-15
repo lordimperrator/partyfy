@@ -198,6 +198,29 @@ function add_track_toWishlist(track_name, track_artist, track_uri){
 	})
 }
 
+function get_users_Playlists(username, callback){
+	/*var query = "SELECT wishlist_spotifyusertoken FROM wishlist_spotifydata	LEFT JOIN wishlist_user	ON wishlist_user_id_fk = wishlist_user_id WHERE wishlist_user_name = '"+username+"'"
+	con.query(query, function(err, result){
+		console.log(result)
+		var token = result[0].wishlist_spotifyusertoken
+		console.log(token)*/
+		var token = "BQBSCOQNNnQbbEfusucnxb6wejTd8m9bE03vVDWCbFayXdeJyoekn5-UWfO2wG29Cue1lMLsrzab7m54dtzRmGExUZkaTr0-mJNUeVy31tbnQEvadgSMSpXFaFnxn8nou0JWUekamtK0Fl0jYOLOsAscN-Xtz0TqDQ1xAOE3h4gnW_4oTRvfCKPCRdQ5ixb2vfMUS-wu2kCuYi4UvtwNmWopKWUPDn1svxKwW1CFvk92"
+		request({
+			url: "https://api.spotify.com/v1/me/playlists",
+			method: "GET",
+			json: true,
+			headers:
+			{
+				"Content-Type" : "application/json",
+				"Authorization" : "Bearer " + token    
+			}
+		}, function(error,response,result){
+			console.log(result)
+			callback(result)		
+		})
+	//})
+}
+
 function validate_host_data(username, email, callback){
 		if(username == ""){
 			var compare_result = "EmptyUsername"
@@ -322,7 +345,12 @@ app.post("/host", function(req,res){
 			}
 		})
 	}
-	
+	if(req.body.submit_device){
+		get_users_Playlists(req.session.username,function(result){
+			res.render("host_playlist", {"items" : result.items});
+		})
+		
+	}	
 })
 
 
@@ -330,7 +358,7 @@ app.post("/host", function(req,res){
 
 
 app.get("/login", function(req, res){
-	var scopes = 'user-read-private user-read-email user-read-birthdate playlist-modify-public playlist-modify-private';
+	var scopes = 'user-read-private user-read-email user-read-birthdate playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative';
 	res.redirect('https://accounts.spotify.com/authorize' +
 	'?response_type=code' +
 	'&client_id=' + clientId +

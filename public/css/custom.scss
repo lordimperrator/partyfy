@@ -193,6 +193,26 @@ body {
     border: solid 4px rgb(30,215,96);  
 }
 
+#host_playlist_select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border:none;
+    border-radius: 0;
+    width: 60%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    height: 60%;
+}
+
+#host_playlist_option{
+    height: 10%;
+    width: 100%;
+    background-color:  rgb(40, 40, 40); 
+    color: white;
+
+}
+
 @include media-breakpoint-up(sm) {
     #setup_container{ 
         border-radius: 20px 20px 20px 20px;  
