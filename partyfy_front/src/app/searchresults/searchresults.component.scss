@@ -1,0 +1,32 @@
+@import "../../../node_modules/bootstrap-scss/bootstrap";
+#results{
+    background-color: rgb(40,40,40);
+    color: rgb(200,200,200);
+    padding: 0px;
+}
+
+img{
+    height: 300px;
+    width: 300px;
+}
+
+.media{
+    background-color: rgb(40,40,40);
+    padding: 0px;
+   
+}
+
+.col-lg-6{
+    padding: 0px;
+    background-color: rgb(40,40,40);
+}
+
+#resultContainer{
+    margin-left: 10%;
+}
+
+.media-body{
+    padding-left: 10px;
+    font-size: 2em;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+}

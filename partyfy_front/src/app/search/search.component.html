@@ -1,0 +1,15 @@
+<div id="container">
+    <button type="button" (click)="signin()">Sign in!</button>
+  <div id="content">
+      <div id="title">Partyfy</div>
+      <div id="subtitle">make a Songwish...</div>
+        <div id="searchbar">
+          <input #searchterm id="searchtext" (keyup.enter)="search(searchterm.value)" value="{{termSearch}}" placeholder="Search...">
+          <button (click)="search(searchterm.value)"  id="searchbutton" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-search"></span> Search 
+          </button>   
+        </div>          
+  </div>    
+</div>
+<app-searchresults></app-searchresults>
+

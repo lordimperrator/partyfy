@@ -1,0 +1,38 @@
+<div id="result">
+   <div id="results" *ngIf="result$ | async as result"> 
+      <br>
+      <br>
+      <div *ngFor="let track of result; let isOdd = odd; let isEven = even;">
+         <div *ngIf="isEven">
+            <div class="col-lg-6">
+               <div id="resultContainer">
+                  <div class="media">
+                     <img [src] = "track.imageUrl">
+                     <div class="media-body">
+                        {{track.name}}<br>
+                        {{track.artist}}<br>               
+                     </div>
+                  </div>
+               </div>  
+               <br>          
+            </div>            
+         </div>
+         <div *ngIf="isOdd">
+            <div class="col-lg-6">
+               <div id="resultContainer">
+                  <div class="media">
+                     <img [src] = "track.imageUrl">
+                     <div class="media-body">
+                        {{track.name}}<br>
+                        {{track.artist}}<br>               
+                     </div>
+                  </div>
+               </div>
+               <br>
+            </div>         
+         </div>
+      </div>         
+   </div>
+</div>
+
+
