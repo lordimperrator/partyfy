@@ -6,6 +6,7 @@ var mysql = require('mysql')
 var cookieParser = require('cookie-parser')
 var session = require('express-session')
 var datetime = require('node-datetime')
+var cors = require('cors')
  
 // credentials are optional
 var app = express()
@@ -21,7 +22,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(session({secret: "12345678"}))
- 
+
+
+
+app.use(cors())
+
 var con = mysql.createConnection({
 	host: "localhost",
 	user: "webserver",
@@ -64,7 +69,7 @@ function get_user_token(token, callback){
 		{
 			grant_type : "authorization_code",
 			code : token ,
-			redirect_uri : "http://localhost:3000/host"
+			redirect_uri : "http://localhost:4200/signin"
 		}
 	}, function(error, response, body){
 		return callback(body)
@@ -146,6 +151,22 @@ function get_user_devices(access_token, callback){
 			"Content-Type" : "application/json"
 		}},function(error, response, result){
 			callback(result)
+		}
+	)
+}
+
+function get_user_name(access_token, callback){
+	request({
+		url: "https://api.spotify.com/v1/me/player/devices",
+		method: "GET",
+		json: true,
+		headers:
+		{
+			"Authorization" : "Bearer " + access_token,
+			"Content-Type" : "application/json"
+		}},function(error, response, result){
+			console.log(result);
+			callback(result.display_name)
 		}
 	)
 }
@@ -250,6 +271,14 @@ function validate_host_data(username, email, callback){
 
 var archived_result;
 
+app.route('/api/search/:term').get(function(req,res){
+	const searchterm = req.params['term'];
+	search(searchterm, function(result){
+		console.log(result.tracks.items);		
+		res.send(result.tracks.items);
+	})
+})
+
 app.get("/", function(req, res) {
 	console.log(req.headers.host)
 	if(req.query.search_term != null && req.query.search_term != ""){
@@ -299,19 +328,19 @@ app.get("/playback", function(req, res){
 	})
 })
 
-app.get("/host", function(req, res){
-	console.log(req.query.code)
-	if(req.query.code != undefined){
-		get_user_token(req.query.code, function(result){        
-			console.log(result.access_token)
-			access_token = result.access_token
-			save_user_data(req.session.username, req.session.email,req.query.code,access_token)
-			get_user_devices(access_token,function(result){
-				res.render("host_device", {"alert" : false, "devices" : result.devices})
-			})			
+app.post("/api/authorize", function(req, res){
+	console.log(req.body.token)
+	if(req.body.token != undefined){
+		get_user_token(req.body.token, function(result){        
+			access_token = result.access_token			
+			console.log(access_token)
+			get_userid(access_token, function(result){
+				console.log(result.display_name)
+				res.send('{"username": "' + result.display_name + '"}')
+			})		
 		})		
 	}else{
-		res.render("host", {"alert" : false})
+		console.log("Error")
 	}
 })
 
