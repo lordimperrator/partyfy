@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/css/custom.css">
+        <title>Partyfy</title>
+    </head>
+    <body id="host_body">
+        <div id="setup_container">
+            <h1 id="head_text">Host your own Partyfy!</h1>
+            <p id="host_information">
+                Nice Partyfy will play the music
+                on your selected device.<br>Now please choose a default
+                Playlist, which will be played during the Party, if 
+                no other song is requested.
+            </p>
+            <form method="POST">
+                <select id="host_playlist_select" size="4">
+                    {% for item in items %}
+                        <option id="host_playlist_option">{{item.name}}</option>
+                    {% endfor %}
+                </select>
+            </form>            
+        </div>         
+    </body>    
+</html>
