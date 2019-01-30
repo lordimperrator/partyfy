@@ -331,12 +331,28 @@ app.get("/playback", function(req, res){
 app.post("/api/authorize", function(req, res){
 	console.log(req.body.token)
 	if(req.body.token != undefined){
-		get_user_token(req.body.token, function(result){        
+		get_user_token(req.body.token, function(result){    
+			console.log(result);    
 			access_token = result.access_token			
+			resString = '{'
 			console.log(access_token)
 			get_userid(access_token, function(result){
-				console.log(result.display_name)
-				res.send('{"username": "' + result.display_name + '"}')
+				resString += '"username": "' + result.display_name + '",'
+				console.log(result);
+				console.log(access_token)
+				get_user_devices(access_token, function(result){
+					console.log(result)
+					var devices = JSON.parse(result.devices);
+					resString = '"devices": ['
+					devices.devices.forEach(element => {
+						resString += '"' + element.name + '",';
+					});
+					if(resString.charAt(resString.length - 1).equals(',')){
+						resString = resString.substring(0,resString.length -1);
+					}
+					resString += ']}'
+					return resString;
+				})				
 			})		
 		})		
 	}else{

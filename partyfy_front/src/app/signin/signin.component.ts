@@ -13,13 +13,17 @@ import { Observable } from 'rxjs';
 export class SigninComponent implements OnInit {
   private code = '';
   constructor(private router: Router, private authService: AuthorizeService) { }
-  username$: Observable<any>;
+  username: String;
   ngOnInit() {
     this.code = this.router.url.toString();
     if (this.code.includes('?code')) {
       this.code = this.code.substring((this.code.indexOf('?') + 6), this.code.length);
       console.log('here');
-      this.username$ = this.authService.getUserInformation(this.code);
+      this.authService.getUserInformation(this.code).subscribe(
+        (data) => {
+          this.username = data.username;
+        }
+      );
     }
   }
 
