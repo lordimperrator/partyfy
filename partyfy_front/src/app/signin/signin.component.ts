@@ -21,6 +21,8 @@ export class SigninComponent implements OnInit {
       console.log('here');
       this.authService.getUserInformation(this.code).subscribe(
         (data) => {
+          console.log(data.username);
+          console.log(data.devices);
           this.username = data.username;
         }
       );

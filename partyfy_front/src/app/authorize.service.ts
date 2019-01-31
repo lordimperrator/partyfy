@@ -23,6 +23,7 @@ export class AuthorizeService {
     return new Observable<UserInformation>((observer) => {
       this.http.post('http://localhost:3000/api/authorize/', '{"token": "' + userauthtoken + '"}', httpOptions).subscribe(
         data => {
+          console.log(data);
           observer.next(new UserInformation().deserialize(data));
         }
       );
