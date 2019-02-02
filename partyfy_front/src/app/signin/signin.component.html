@@ -1,7 +1,13 @@
 <div id="container">
   <div id="content">
     <div id="title">
-        Welcome {{username}}
+        Welcome {{username}}<br>
+        <div *ngIf="page === 0">
+            <app-signin-start-form></app-signin-start-form>
+        </div>
+        <div *ngIf="page === 1">
+            <app-signin-device-form></app-signin-device-form>
+        </div>        
     </div>    
   </div>    
 </div>

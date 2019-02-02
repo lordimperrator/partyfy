@@ -7,6 +7,8 @@ import { SearchresultsComponent } from './searchresults/searchresults.component'
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { SigninComponent } from './signin/signin.component';
 import { AppRoutingModule } from './app-routing.module';
+import { SigninStartFormComponent } from './signin-start-form/signin-start-form.component';
+import { SigninDeviceFormComponent } from './signin-device-form/signin-device-form.component';
 
 
 @NgModule({
@@ -14,7 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
     AppComponent,
     SearchComponent,
     SearchresultsComponent,
-    SigninComponent
+    SigninComponent,
+    SigninStartFormComponent,
+    SigninDeviceFormComponent
   ],
   imports: [
     BrowserModule,

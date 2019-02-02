@@ -331,27 +331,33 @@ app.get("/playback", function(req, res){
 app.post("/api/authorize", function(req, res){
 	console.log(req.body.token)
 	if(req.body.token != undefined){
-		get_user_token(req.body.token, function(result){    			 
-			access_token = result.access_token			
-			resString = '{'			
-			get_userid(access_token, function(result){				
-				resString += '"username": "' + result.display_name + '",'				
+		get_user_token(req.body.token, function(result){    		 
+			access_token = result.access_token
+			if(access_token != undefined){
+				resString = '{'			
+				get_userid(access_token, function(result){				
+				resString += '"username": "' + result.display_name + '",' +
+				'"userId": "' + result.id + '",'				
 				get_user_devices(access_token, function(result){									
 					resString += '"devices": ['
 					result.devices.forEach(element => {
-						resString += '"' + element.name + '",';
+						resString += '{"deviceName": "' + element.name + '",' +
+						'"deviceId" : "' + element.id +'"},'
 					});
 					if(resString.charAt(resString.length - 1) == ','){
 						resString = resString.substring(0,resString.length -1);
 					}
 					resString += ']}'
 					console.log(resString)
-					res.send(resString);
-				})				
-			})		
+					res.status(200).send(resString);
+					})				
+				})		
+			} else {
+				res.status(400).send('token expiered')
+			}			
 		})		
-	}else{
-		console.log("Error")
+	} else {
+		res.status(400).send('no token given')
 	}
 })
 

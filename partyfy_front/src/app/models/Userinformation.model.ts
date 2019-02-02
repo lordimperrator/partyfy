@@ -1,18 +1,18 @@
 import {Deserializable} from './Deserializable.model';
+import { Device } from './Device.model';
 
 
 
 export class UserInformation implements Deserializable {
     username: string;
-    devices: Array<String>;
+    devices: Array<Device>;
     constructor() {}
 
     deserialize(input: any) {
-        this.devices = new Array<String>();
-        console.log('.');
+        this.devices = new Array<Device>();
         this.username = input.username;
         input.devices.forEach(element => {
-            this.devices.push(element);
+            this.devices.push(new Device().deserialize(element));
         });
         return this;
     }

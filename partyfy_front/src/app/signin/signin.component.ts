@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthorizeService } from '../authorize.service';
 import { Observable } from 'rxjs';
+import { FormService } from '../form.service';
 
 
 
@@ -12,7 +13,8 @@ import { Observable } from 'rxjs';
 })
 export class SigninComponent implements OnInit {
   private code = '';
-  constructor(private router: Router, private authService: AuthorizeService) { }
+  private page = 0;
+  constructor(private router: Router, private authService: AuthorizeService, private formService: FormService) { }
   username: String;
   ngOnInit() {
     this.code = this.router.url.toString();
@@ -21,9 +23,13 @@ export class SigninComponent implements OnInit {
       console.log('here');
       this.authService.getUserInformation(this.code).subscribe(
         (data) => {
-          console.log(data.username);
-          console.log(data.devices);
+          this.formService.setUserinfo(data);
           this.username = data.username;
+        }
+      );
+      this.formService.pagenumber$.subscribe(
+        (data) => {
+          this.page = data;
         }
       );
     }
