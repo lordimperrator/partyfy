@@ -4,6 +4,7 @@
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 5%;
+    margin-bottom: 10%;
     align-content: center;
     
 }
@@ -22,13 +23,19 @@ option{
 p{
     font-size: 15pt;
     text-align: center;
+} 
+
+button {
+    margin-right: 50px;
 }
 
 #scrollbox {
     margin-bottom: 10%;
-    height: 100%;
+    height: 400px;
     width: 100%;
-    overflow: auto;
+    overflow:scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
     scrollbar-base-color: rgba(38,38,38,0);
 }
 

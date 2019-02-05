@@ -8,10 +8,18 @@
     and then can make a songwish.
   </p>
   <br>
-  <br>  
-  Partyname : <input #partyname id="partyname" type='text'>
-  <br>
-  <br>
-  <button (click)="nextPage()">Next</button>
+  <br> 
+  <div *ngIf="error;else then" >
+    Partyname : <input #partynamebox id="partyname_error" (keyup.enter)="nextPage(partynamebox.value)">
+    <br>
+    <br>
+    <button (click)="nextPage(partynamebox.value)">Next</button>
+  </div>
+  <ng-template #then>
+    Partyname : <input #partynamebox id="partyname" value="{{partyname}}"  (keyup.enter)="nextPage(partynamebox.value)">
+    <br>
+    <br>
+    <button (click)="nextPage(partynamebox.value)">Next</button>
+  </ng-template>      
 </div>
 

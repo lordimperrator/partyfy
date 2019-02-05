@@ -17,10 +17,19 @@ export class FormService {
     this.pagenumber.next(number);
   }
 
+  public getPartyname(): String {
+    return this.partydata.getName();
+  }
+
   public setUserinfo(userinfo: UserInformation) {
-    console.log('...');
     this.userinfo.next(userinfo);
   }
 
-  constructor() { }
+  public setPartyname(partyname: String) {
+    this.partydata.setName(partyname);
+  }
+
+  constructor() {
+    this.partydata = new Party();
+   }
 }

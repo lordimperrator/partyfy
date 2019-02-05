@@ -19,8 +19,9 @@ export class SigninDeviceFormComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    console.log('init');
-  }
+  ngOnInit() {}
 
+  previousPage() {
+    this.formService.toPage(0);
+  }
 }

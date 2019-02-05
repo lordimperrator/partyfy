@@ -7,6 +7,16 @@
     border-left: none;
 }
 
+#partyname_error {
+    color: white;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: red;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
 #form{
     font-size: 20pt;
     margin-left: 10%;
@@ -19,3 +29,4 @@ p{
     font-size: 15pt;
     text-align: center;
 }
+

@@ -8,13 +8,28 @@ import { FormService } from '../form.service';
 })
 export class SigninStartFormComponent implements OnInit {
 
-  constructor(private formService: FormService) { }
+  partyname: String;
 
+  constructor(private formService: FormService) {
+    if (this.formService.getPartyname() != null) {
+      this.partyname = this.formService.getPartyname();
+    } else {
+      this.partyname = '';
+    }
+   }
+
+  error = false;
   ngOnInit() {
   }
 
-  nextPage() {
-    this.formService.toPage(1);
+  nextPage(partyname: String) {
+    console.log(partyname);
+    if (partyname.match('([A-Z]|[a-z]|[0-9])+')) {
+      this.formService.setPartyname(partyname);
+      this.formService.toPage(1);
+    } else {
+      this.error = true;
+    }
   }
 
 }
