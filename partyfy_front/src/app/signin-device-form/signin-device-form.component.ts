@@ -10,7 +10,10 @@ import { Device } from '../models/Device.model';
 export class SigninDeviceFormComponent implements OnInit {
 
   devices = new Array<Device>();
+  selectedDevice = new String();
   constructor(private formService: FormService) {
+    this.selectedDevice = formService.getDeviceId();
+    console.log(this.selectedDevice);
     this.formService.userinfo$.subscribe(
       (data) => {
         console.log(data);
@@ -24,4 +27,10 @@ export class SigninDeviceFormComponent implements OnInit {
   previousPage() {
     this.formService.toPage(0);
   }
+
+  saveValue(input: any) {
+    console.log(input + "");
+    this.formService.setDeviceId(input);
+  }
+
 }

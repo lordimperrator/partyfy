@@ -29,6 +29,15 @@ export class FormService {
     this.partydata.setName(partyname);
   }
 
+  public getDeviceId(): String {
+    return this.partydata.getDeviceId();
+  }
+
+  public setDeviceId(deviceId: String) {
+    console.log(deviceId);
+    this.partydata.setDeviceId(deviceId);
+  }
+
   constructor() {
     this.partydata = new Party();
    }
