@@ -2,12 +2,12 @@
   <p>Please select a device for the playback</p>    
   <div id="scrollbox" class="radio-devices">    
         <div *ngFor="let device of devices; first as isFirst">
-          <div *ngIf="isFirst;else then">
-            <input type="radio" id="{{device.devicename}}" name="device_choice" value="{{device.deviceid}}" checked>
+          <div *ngIf="((selectedDevice == device.deviceid) || (selectedDevice == '' && isFirst));else then">
+            <input type="radio" id="{{device.devicename}}" name="device_choice" value="{{device.deviceid}}" (click)="setDeviceId(device.deviceid)" checked>
             <label for="{{device.devicename}}">{{device.devicename}}</label>
           </div>
           <ng-template #then>
-            <input type="radio" id="{{device.devicename}}" name="device_choice" value="{{device.deviceid}}">
+            <input type="radio" id="{{device.devicename}}" name="device_choice" value="{{device.deviceid}}" (click)="setDeviceId(device.deviceid)">
             <label for="{{device.devicename}}">{{device.devicename}}</label>
           </ng-template>
         </div>      

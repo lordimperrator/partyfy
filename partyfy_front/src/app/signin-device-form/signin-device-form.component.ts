@@ -10,6 +10,7 @@ import { Device } from '../models/Device.model';
 export class SigninDeviceFormComponent implements OnInit {
 
   devices = new Array<Device>();
+  selectedDevice: String;
   constructor(private formService: FormService) {
     this.formService.userinfo$.subscribe(
       (data) => {
@@ -17,11 +18,23 @@ export class SigninDeviceFormComponent implements OnInit {
         this.devices = data.devices;
       }
     );
+    if (formService.getDeviceId() != null) {
+      this.selectedDevice = formService.getDeviceId();
+    } else {
+      this.selectedDevice = this.devices[0].deviceid;
+    }
   }
 
   ngOnInit() {}
 
   previousPage() {
     this.formService.toPage(0);
+  }
+
+  nextPage() {
+  }
+
+  setDeviceId(input: String) {
+    this.formService.setDeviceId(input);
   }
 }

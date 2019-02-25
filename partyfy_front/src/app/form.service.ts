@@ -21,12 +21,20 @@ export class FormService {
     return this.partydata.getName();
   }
 
+  public getDeviceId(): String {
+    return this.partydata.getDeviceId();
+  }
+
   public setUserinfo(userinfo: UserInformation) {
     this.userinfo.next(userinfo);
   }
 
   public setPartyname(partyname: String) {
     this.partydata.setName(partyname);
+  }
+
+  public setDeviceId(deviceId: String) {
+    this.partydata.setDeviceId(deviceId);
   }
 
   constructor() {
