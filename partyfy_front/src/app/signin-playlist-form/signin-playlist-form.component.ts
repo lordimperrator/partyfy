@@ -22,6 +22,7 @@ export class SigninPlaylistFormComponent implements OnInit {
     } else {
       this.selectedPlaylist = this.playlists[0].playlistid;
     }
+    formService.setPlaylistId(this.selectedPlaylist);
     console.log(this.selectedPlaylist);
   }
 
