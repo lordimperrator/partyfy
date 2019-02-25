@@ -25,6 +25,7 @@ export class SigninDeviceFormComponent implements OnInit {
     } else {
       this.selectedDevice = this.devices[0].deviceid;
     }
+    formService.setDeviceId(this.selectedDevice);
   }
 
   ngOnInit() {}

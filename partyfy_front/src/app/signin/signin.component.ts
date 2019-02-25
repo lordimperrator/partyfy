@@ -23,7 +23,10 @@ export class SigninComponent implements OnInit {
       console.log('here');
       this.authService.getUserInformation(this.code).subscribe(
         (data) => {
+          console.log('too');
           this.formService.setUserinfo(data);
+          console.log(data.userId);
+          this.formService.setUserId(data.userId);
           this.username = data.username;
         }
       );

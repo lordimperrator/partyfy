@@ -38,4 +38,12 @@ export class Party {
     public setPlaylistId(playlistid: String) {
         this.playlistid = playlistid;
     }
+
+    public toJsonObject(): string {
+        return `{"partyname" : "` + this.name + `",
+                        "userid" : "` + this.userid + `",
+                        "deviceid" : "` + this.deviceid + `",
+                        "playlistid" : "` + this.playlistid + `"}`;
+
+    }
 }

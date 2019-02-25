@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser')
 var session = require('express-session')
 var datetime = require('node-datetime')
 var cors = require('cors')
+const shortid = require('shortid');
  
 // credentials are optional
 var app = express()
@@ -23,7 +24,7 @@ app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(session({secret: "12345678"}))
 
-
+shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$%')
 
 app.use(cors())
 
@@ -76,23 +77,6 @@ function get_user_token(token, callback){
 	})
 }
 
-function save_user_data(username, email, authtoken, authcode){
-	var query = "INSERT INTO wishlist_user (wishlist_user_name, wishlist_user_email) VALUES('"+ username +"', '"+ email + "')"
-	con.query(query, function(err, result){
-		console.log(result.insertId)
-		var user_id_fk = result.insertId
-		get_userid(authcode,function(result){
-			var dt = datetime.create((Date.now() + 3000))
-			var formatteddate = dt.format('Y-m-d H:M:S')
-			console.log(formatteddate)
-			var query = `INSERT INTO wishlist_spotifydata (wishlist_spotifyusername, wishlist_spotifyuserid, wishlist_spotifyauthtoken, wishlist_spotifyusertoken, wishlist_spotifyusertokenexpire, wishlist_user_id_fk)
-				VALUES('`+ result.display_name +`','`+ result.id +`','`+ authtoken +`','`+ authcode +`','`+ formatteddate +`','`+user_id_fk+`')`
-			con.query(query, function(err, result){
-			console.log(query)
-			})
-		})				
-	})
-}
 
 function get_userid(token, callback)
 {
@@ -155,21 +139,6 @@ function get_user_devices(access_token, callback){
 	)
 }
 
-function get_user_name(access_token, callback){
-	request({
-		url: "https://api.spotify.com/v1/me/player/devices",
-		method: "GET",
-		json: true,
-		headers:
-		{
-			"Authorization" : "Bearer " + access_token,
-			"Content-Type" : "application/json"
-		}},function(error, response, result){
-			console.log(result);
-			callback(result.display_name)
-		}
-	)
-}
 
 function create_playlist(token, user_id, callback){
 	request({
@@ -192,7 +161,27 @@ function create_playlist(token, user_id, callback){
 	})
 }
 
-function add_track_toPlaylist(token, playlist_id, song_id){
+function get_playlist_tracks(token, playlistid, callback){
+	request({
+		url: "https://api.spotify.com/v1/playlists/" + playlistid + "/tracks",
+		method: "GET",
+		json: true,
+		headers: 
+		{
+			"Content-Type" : "application/json",
+			"Authorization" : "Bearer " + token     
+		},
+		qs: 
+		{	
+			"fields" : "items(track(uri))"
+		}
+	}, function(error, response, body){
+		callback(body)
+	})
+}
+
+function add_tracks_toPlaylist(token, playlist_id, tracks, callback){
+	console.log(tracks)
 	request({
 		url: "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks",
 		method: "Post",
@@ -202,13 +191,12 @@ function add_track_toPlaylist(token, playlist_id, song_id){
 			"Content-Type" : "application/json",
 			"Authorization" : "Bearer " + token    
 		},
-		body:
+		qs:
 		{
-			"uris" : [song_id]
+			"uris" : tracks
 		}
-	}, function(error, response, body){
-		console.log("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks")
-		console.log(body)
+	}, function(error, response, body){	
+		callback()
 	})
 }
 
@@ -220,24 +208,86 @@ function add_track_toWishlist(track_name, track_artist, track_uri){
 }
 
 function get_users_Playlists(token, callback){
-		request({
-			url: "https://api.spotify.com/v1/me/playlists",
-			method: "GET",
-			json: true,
-			headers:
-			{
-				"Content-Type" : "application/json",
-				"Authorization" : "Bearer " + token    
-			},
-			qs:
-			{
-				"limit" : 50
-			}
-		}, function(error,response,result){
-			console.log(result)
-			callback(result)		
-		})
+	request({
+		url: "https://api.spotify.com/v1/me/playlists",
+		method: "GET",
+		json: true,
+		headers:
+		{
+			"Content-Type" : "application/json",
+			"Authorization" : "Bearer " + token    
+		},
+		qs:
+		{
+			"limit" : 50
+		}
+	}, function(error,response,result){
+		callback(result)		
+	})
 	//})
+}
+
+function play_Playlist(token, playlisturi, deviceid){
+	request({
+		url: "https://api.spotify.com/v1/me/player/play",
+		method: "PUT",
+		json: true,
+		headers:
+		{
+			"Content-Type" : "application/json",
+			"Authorization" : "Bearer " + token    
+		},
+		qs:
+		{
+			"device_id" : deviceid
+		},
+		body:
+		{
+			"context_uri" : playlisturi
+		}
+	}, function(error,response,result){
+		console.log(result)		
+	})
+}
+
+function set_Volume(token,volume,deviceid){
+	request({
+		url: "https://api.spotify.com/v1/me/player/volume",
+		method: "PUT",
+		json: true,
+		headers:
+		{
+			"Content-Type" : "application/json",
+			"Authorization" : "Bearer " + token    
+		},
+		qs:
+		{
+			"device_id" : deviceid,
+			"volume_percent": volume
+		}		
+	}, function(error,response,result){
+		console.log(result)		
+	})
+}
+
+function set_Repeat(token,deviceid) {
+	request({
+		url: "https://api.spotify.com/v1/me/player/repeat",
+		method: "PUT",
+		json: true,
+		headers:
+		{
+			"Content-Type" : "application/json",
+			"Authorization" : "Bearer " + token    
+		},
+		qs:
+		{
+			"device_id" : deviceid,
+			"state": "context"
+		}		
+	}, function(error,response,result){
+		console.log(result)		
+	})
 }
 
 function validate_host_data(username, email, callback){
@@ -265,6 +315,51 @@ function validate_host_data(username, email, callback){
 		})
 }
 
+function save_spotify_data(userid, authtoken, refreshtoken, tokenduration, callback) {
+	console.log(tokenduration)
+	var dt = datetime.create((Date.now()))
+	var formatteddate = dt.format('Y-m-d H:M:S')
+	var query = `INSERT INTO wishlist_spotifydata (wishlist_spotifyuserid, wishlist_spotifyauthtoken, wishlist_spotifyrefreshtoken, wishlist_spotifyusertokenexpire)
+	VALUES('`+ userid +`','`+ authtoken +`','`+ refreshtoken +`','`+ formatteddate +`')`
+	con.query(query, function(err, result, fields){
+		callback(result.insertId)
+	})
+}
+
+function signup(userid, partyname, deviceid, originalplaylistid, partycode) {
+	var query = `SELECT wishlist_spotifyuserid, wishlist_spotifyauthtoken FROM wishlist_spotifydata WHERE wishlist_spotifydata_id = ` + userid;
+	con.query(query, function(err, result, fields){
+		authtoken = result[0].wishlist_spotifyauthtoken;
+		spotifyuserid = result[0].wishlist_spotifyuserid;
+		create_playlist(authtoken, spotifyuserid, function(result) {
+			var playlistid = result.id
+			var playlisturi = result.uri
+			get_playlist_tracks(authtoken,originalplaylistid,function(result){
+				tracks = ''
+				result.items.forEach(element =>{
+					tracks += ''+ element.track.uri +','
+				})
+				if(tracks.charAt(tracks.length - 1) == ','){
+					tracks = tracks.substring(0,tracks.length -1);
+				}
+				tracks += '';	
+				add_tracks_toPlaylist(authtoken,playlistid,tracks, function(){
+					play_Playlist(authtoken,playlisturi,deviceid);
+					set_Volume(authtoken,100,deviceid);
+					set_Repeat(authtoken,deviceid);
+				});				
+				query = `INSERT INTO wishlist_user (wishlist_spotifydata_id_fk, wishlist_user_device_id, wishlist_user_originalplaylist_id, wishlist_user_playlist_id, wishlist_user_partyname, wishlist_user_partycode)
+				VALUES('`+ userid +`','`+ deviceid +`','`+ originalplaylistid +`','`+ playlistid +`','`+ partyname +`','`+ partycode +`')`
+				con.query(query, function(err, result, fields){
+					console.log(result);
+				})
+			})				
+		})
+	})
+	
+	
+
+}
 
 
 var archived_result;
@@ -326,40 +421,53 @@ app.get("/playback", function(req, res){
 	})
 })
 
+app.post("/api/signup", function(req,res){
+	console.log(req.body);
+	partycode = shortid.generate();
+	console.log(partycode);
+	signup(req.body.userid, req.body.partyname, req.body.deviceid, req.body.playlistid, partycode)
+	res.send('{"code" : "' + partycode + '"}')
+})
+
 app.post("/api/authorize", function(req, res){
-	console.log(req.body.token)
+	//console.log(req.body)
 	if(req.body.token != undefined){
-		get_user_token(req.body.token, function(result){    		 
+		get_user_token(req.body.token, function(result){    
+			console.log(result)		 
 			access_token = result.access_token
+			refreshtoken = result.refresh_token
+			duration = result.expires_in
 			if(access_token != undefined){
 				resString = '{'			
-				get_userid(access_token, function(result){				
-				resString += '"username": "' + result.display_name + '",' +
-				'"userId": "' + result.id + '",'				
-				get_user_devices(access_token, function(result){									
-					resString += '"devices": ['
-					result.devices.forEach(element => {
-						resString += '{"deviceName": "' + element.name + '",' +
-						'"deviceId" : "' + element.id +'"},'
-					});
-					if(resString.charAt(resString.length - 1) == ','){
-						resString = resString.substring(0,resString.length -1);
-					}
-					resString += '],'
-					get_users_Playlists(access_token, function(result){
-						resString += '"playlists": ['
-						result.items.forEach(element => {
-							resString += '{"playlistName": "' + element.name + '",' +
-							'"playlistId" : "' + element.id + '"},'
-						});
-						if(resString.charAt(resString.length - 1) == ','){
-							resString = resString.substring(0,resString.length -1);
-						}
-						resString += ']}'		
-						console.log(resString)
-						res.status(200).send(resString);
-					});			
-					})				
+				get_userid(access_token, function(result){
+					save_spotify_data(result.id,access_token, refreshtoken, duration, function(id){
+						resString += '"username": "' + result.display_name + '",' +
+						'"userId": "' + id + '",'				
+						get_user_devices(access_token, function(result){									
+							resString += '"devices": ['
+							result.devices.forEach(element => {
+								resString += '{"deviceName": "' + element.name + '",' +
+								'"deviceId" : "' + element.id +'"},'
+							});
+							if(resString.charAt(resString.length - 1) == ','){
+								resString = resString.substring(0,resString.length -1);
+							}
+							resString += '],'
+							get_users_Playlists(access_token, function(result){
+								resString += '"playlists": ['
+								result.items.forEach(element => {
+									resString += '{"playlistName": "' + element.name + '",' +
+									'"playlistId" : "' + element.id + '"},'
+								});
+								if(resString.charAt(resString.length - 1) == ','){
+									resString = resString.substring(0,resString.length -1);
+								}
+								resString += ']}'		
+								console.log(resString)
+								res.status(200).send(resString);
+							});			
+						})
+					})									
 				})		
 			} else {
 				res.status(400).send('token expiered')

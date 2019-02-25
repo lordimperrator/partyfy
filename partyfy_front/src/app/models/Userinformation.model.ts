@@ -6,6 +6,7 @@ import { Playlist } from './Playlist.model';
 
 export class UserInformation implements Deserializable {
     username: string;
+    userId: string;
     devices: Array<Device>;
     playlists: Array<Playlist>;
     constructor() {}
@@ -13,6 +14,7 @@ export class UserInformation implements Deserializable {
     deserialize(input: any) {
         this.devices = new Array<Device>();
         this.playlists = new Array<Playlist>();
+        this.userId = input.userId;
         this.username = input.username;
         input.devices.forEach(element => {
             this.devices.push(new Device().deserialize(element));

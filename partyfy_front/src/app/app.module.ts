@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SigninStartFormComponent } from './signin-start-form/signin-start-form.component';
 import { SigninDeviceFormComponent } from './signin-device-form/signin-device-form.component';
 import { SigninPlaylistFormComponent } from './signin-playlist-form/signin-playlist-form.component';
+import { SigninFinalFormComponent } from './signin-final-form/signin-final-form.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { SigninPlaylistFormComponent } from './signin-playlist-form/signin-playl
     SigninComponent,
     SigninStartFormComponent,
     SigninDeviceFormComponent,
-    SigninPlaylistFormComponent
+    SigninPlaylistFormComponent,
+    SigninFinalFormComponent
   ],
   imports: [
     BrowserModule,
