@@ -34,6 +34,7 @@ export class SigninDeviceFormComponent implements OnInit {
   }
 
   nextPage() {
+    this.formService.toPage(2);
   }
 
   setDeviceId(input: String) {

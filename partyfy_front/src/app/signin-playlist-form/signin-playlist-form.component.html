@@ -1,0 +1,17 @@
+<div id="form">
+  <p>Please select a playlist for the playback</p>    
+  <div id="scrollbox" class="radio-playlists">    
+        <div *ngFor="let playlist of playlists; first as isFirst">
+          <div *ngIf="((selectedPlaylist == playlist.playlistid) || (selectedplaylist == '' && isFirst));else then">
+            <input type="radio" id="{{playlist.playlistname}}" name="playlist_choice" value="{{playlist.playlistid}}" (click)="setplaylistId(playlist.playlistid)" checked>
+            <label for="{{playlist.playlistname}}">{{playlist.playlistname}}</label>
+          </div>
+          <ng-template #then>
+            <input type="radio" id="{{playlist.playlistname}}" name="playlist_choice" value="{{playlist.playlistid}}" (click)="setplaylistId(playlist.playlistid)">
+            <label for="{{playlist.playlistname}}">{{playlist.playlistname}}</label>
+          </ng-template>
+        </div>      
+  </div> 
+  <button (click)="previousPage()">Back</button>
+  <button (click)="nextPage()">Next</button>       
+</div>

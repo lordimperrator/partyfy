@@ -9,6 +9,7 @@ import { SigninComponent } from './signin/signin.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SigninStartFormComponent } from './signin-start-form/signin-start-form.component';
 import { SigninDeviceFormComponent } from './signin-device-form/signin-device-form.component';
+import { SigninPlaylistFormComponent } from './signin-playlist-form/signin-playlist-form.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SigninDeviceFormComponent } from './signin-device-form/signin-device-fo
     SearchresultsComponent,
     SigninComponent,
     SigninStartFormComponent,
-    SigninDeviceFormComponent
+    SigninDeviceFormComponent,
+    SigninPlaylistFormComponent
   ],
   imports: [
     BrowserModule,

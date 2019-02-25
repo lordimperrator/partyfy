@@ -12,9 +12,9 @@ export class SigninStartFormComponent implements OnInit {
 
   constructor(private formService: FormService) {
     if (this.formService.getPartyname() != null) {
-      this.partyname = this.formService.getPartyname() + '';
+      this.partyname = this.formService.getPartyname();
     } else {
-      this.partyname = ' ';
+      this.partyname = '';
     }
    }
 

@@ -1,0 +1,63 @@
+
+#form{
+    font-size: 20pt;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    margin-bottom: 10%;
+    align-content: center;
+    
+}
+
+select{
+    background-color: rgba(0,0,0,0);
+    border: none;
+    width: 80%;    
+    height: 80%;
+}
+
+option{
+    height: 50%;
+}
+
+p{
+    font-size: 15pt;
+    text-align: center;
+} 
+
+button {
+    margin-right: 50px;
+}
+
+#scrollbox {
+    margin-bottom: 10%;
+    height: 400px;
+    width: 100%;
+    overflow:scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    scrollbar-base-color: rgba(38,38,38,0);
+}
+
+.radio-playlists input[type="radio"]{
+    display: none;
+ }  
+ 
+ .radio-playlists label{
+     display: block;
+     background: url("/img/speaker.png");
+     background-color: rgb(40,40,40);    
+     background-size: contain;
+     background-position-x: left;
+     background-repeat: no-repeat;
+     border: solid 2px rgb(40,40,40); 
+     margin-left: 20%;
+     margin-right: 20%;
+     margin-top: 2.5%;
+     font-size: 1.5em;
+     cursor: pointer;
+ }
+ 
+ .radio-playlists input[type="radio"]:checked + label{
+     border: solid 4px rgb(30,215,96);  
+ }

@@ -38,6 +38,14 @@ export class FormService {
     this.partydata.setDeviceId(deviceId);
   }
 
+  public getPlaylistId(): String {
+    return this.partydata.getPlaylistId();
+  }
+
+  public setPlaylistId(playlistId: String) {
+    return this.partydata.setPlaylistId(playlistId);
+  }
+
   constructor() {
     this.partydata = new Party();
    }
