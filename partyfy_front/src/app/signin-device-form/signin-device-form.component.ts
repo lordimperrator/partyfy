@@ -12,6 +12,8 @@ export class SigninDeviceFormComponent implements OnInit {
   devices = new Array<Device>();
   selectedDevice: String;
   constructor(private formService: FormService) {
+    this.selectedDevice = formService.getDeviceId();
+    console.log(this.selectedDevice);
     this.formService.userinfo$.subscribe(
       (data) => {
         console.log(data);
