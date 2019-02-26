@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { stringify } from '@angular/core/src/util';
 import { SearchService } from '../search.service';
 import { DOCUMENT } from '@angular/common';
+import { WishlistService } from '../wishlist.service';
 
 @Component({
   selector: 'app-search',
@@ -11,7 +12,9 @@ import { DOCUMENT } from '@angular/common';
 export class SearchComponent implements OnInit {
   public termSearch = '';
   private signinref = '';
-  constructor(private searchService: SearchService, @Inject(DOCUMENT) private document: any) {}
+  private showCode = false;
+  constructor(private searchService: SearchService, @Inject(DOCUMENT) private document: any, private wishlistservice: WishlistService) {
+  }
 
   search(searchterm: string) {
     if (searchterm) {
@@ -22,6 +25,17 @@ export class SearchComponent implements OnInit {
 
   signin(): void {
     this.document.location.href = this.signinref;
+  }
+
+  code(): void {
+    this.showCode = true;
+    this.wishlistservice.showCode$.subscribe(
+      (data) => {
+        this.showCode = data;
+        console.log(data);
+      }
+    );
+    console.log(this.showCode);
   }
 
   ngOnInit() {

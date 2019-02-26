@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { SearchService } from '../search.service';
 import { observable, Observable } from 'rxjs';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
+import { WishlistService } from '../wishlist.service';
 export interface Result {
   item: Object;
 }
@@ -15,7 +16,7 @@ export class SearchresultsComponent implements OnInit {
   searchterm: '';
   test = '';
   result$: Observable<any>;
-  constructor(private searchService: SearchService, private _scrollToService: ScrollToService) {
+  constructor(private searchService: SearchService, private _scrollToService: ScrollToService, private wishlistservice: WishlistService) {
     searchService.searchInput$.subscribe(
       data => {
         this.searchInputValue(data); }
@@ -42,6 +43,10 @@ export class SearchresultsComponent implements OnInit {
   search(term) {
     this.triggerScrollTo();
     this.result$ = this.searchService.getSearch(term);
+  }
+
+  wish(value) {
+    this.wishlistservice.wishSong(value);
   }
 
 }

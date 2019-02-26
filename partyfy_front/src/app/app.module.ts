@@ -11,6 +11,7 @@ import { SigninStartFormComponent } from './signin-start-form/signin-start-form.
 import { SigninDeviceFormComponent } from './signin-device-form/signin-device-form.component';
 import { SigninPlaylistFormComponent } from './signin-playlist-form/signin-playlist-form.component';
 import { SigninFinalFormComponent } from './signin-final-form/signin-final-form.component';
+import { PartycodeComponent } from './partycode/partycode.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { SigninFinalFormComponent } from './signin-final-form/signin-final-form.
     SigninStartFormComponent,
     SigninDeviceFormComponent,
     SigninPlaylistFormComponent,
-    SigninFinalFormComponent
+    SigninFinalFormComponent,
+    PartycodeComponent
   ],
   imports: [
     BrowserModule,

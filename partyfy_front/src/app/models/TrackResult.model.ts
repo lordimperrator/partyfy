@@ -6,12 +6,14 @@ import { BrowserModule } from '@angular/platform-browser';
 export class TrackResult implements Deserializable {
     name: string;
     artist: string;
+    uri: string;
     imageUrl: SafeUrl;
 
     constructor(private sanitizer: DomSanitizer) {}
 
     deserialize(input: any) {
         this.name = input.name;
+        this.uri = input.uri;
         this.artist = input.artists[0].name;
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(input.album.images[0].url);
         return this;

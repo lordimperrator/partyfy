@@ -1,5 +1,6 @@
 <div id="container">
     <button type="button" (click)="signin()">Sign in!</button>
+    <button type="button" (click)="code()">Join!</button>
   <div id="content">
       <div id="title">Partyfy</div>
       <div id="subtitle">make a Songwish...</div>
@@ -10,6 +11,9 @@
           </button>   
         </div>          
   </div>    
+</div>
+<div *ngIf="showCode">
+  <app-partycode></app-partycode>
 </div>
 <app-searchresults></app-searchresults>
 

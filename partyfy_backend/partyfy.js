@@ -173,7 +173,8 @@ function get_playlist_tracks(token, playlistid, callback){
 		},
 		qs: 
 		{	
-			"fields" : "items(track(uri))"
+			"fields" : "items(track(uri))",
+			"limit" : 50
 		}
 	}, function(error, response, body){
 		callback(body)
@@ -196,6 +197,7 @@ function add_tracks_toPlaylist(token, playlist_id, tracks, callback){
 			"uris" : tracks
 		}
 	}, function(error, response, body){	
+		console.log(error);
 		callback()
 	})
 }
@@ -290,29 +292,39 @@ function set_Repeat(token,deviceid) {
 	})
 }
 
-function validate_host_data(username, email, callback){
-		if(username == ""){
-			var compare_result = "EmptyUsername"
-			callback(compare_result)
-			return
-		}
-		if(email == ""){
-			var compare_result = "EmptyEmail"
-			callback(compare_result)
-			return
-		}
-		var query = "SELECT wishlist_user_name, wishlist_user_email FROM wishlist_user WHERE wishlist_user_name = '"+ username +"' OR wishlist_user_email = '"+ email +"'"
-		con.query(query, function(err, result, fields){
-			if(result.length == 0){
-				var compare_result = "OK"
-			}else{
-				if(result[0].wishlist_user_name == username)
-				var compare_result = "Username"
-				if(result[0].wishlist_user_email == email)
-				var compare_result = "Email"
-			}			
-			callback(compare_result)
-		})
+function set_Shuffle(token,deviceid) {
+	request({
+		url: "https://api.spotify.com/v1/me/player/shuffle",
+		method: "PUT",
+		json: true,
+		headers:
+		{
+			"Content-Type" : "application/json",
+			"Authorization" : "Bearer " + token    
+		},
+		qs:
+		{
+			"device_id" : deviceid,
+			"state": "false"
+		}		
+	}, function(error,response,result){
+		console.log(result)		
+	})
+}
+
+function get_Playlist(token,playlistid,callback) {
+	request({
+		url: "https://api.spotify.com/v1/playlists/" + playlistid,
+		method: "GET",
+		json: true,
+		headers: 
+		{
+			"Content-Type" : "application/json",
+			"Authorization" : "Bearer " + token     
+		}		
+	}, function(error, response, body){
+		callback(body)
+	})	
 }
 
 function save_spotify_data(userid, authtoken, refreshtoken, tokenduration, callback) {
@@ -344,9 +356,10 @@ function signup(userid, partyname, deviceid, originalplaylistid, partycode) {
 				}
 				tracks += '';	
 				add_tracks_toPlaylist(authtoken,playlistid,tracks, function(){
+					set_Repeat(authtoken,deviceid);
+					set_Shuffle(authtoken,deviceid)
 					play_Playlist(authtoken,playlisturi,deviceid);
 					set_Volume(authtoken,100,deviceid);
-					set_Repeat(authtoken,deviceid);
 				});				
 				query = `INSERT INTO wishlist_user (wishlist_spotifydata_id_fk, wishlist_user_device_id, wishlist_user_originalplaylist_id, wishlist_user_playlist_id, wishlist_user_partyname, wishlist_user_partycode)
 				VALUES('`+ userid +`','`+ deviceid +`','`+ originalplaylistid +`','`+ playlistid +`','`+ partyname +`','`+ partycode +`')`
@@ -427,6 +440,21 @@ app.post("/api/signup", function(req,res){
 	console.log(partycode);
 	signup(req.body.userid, req.body.partyname, req.body.deviceid, req.body.playlistid, partycode)
 	res.send('{"code" : "' + partycode + '"}')
+})
+
+app.put("/api/wish", function(req,res){
+	//console.log(req.body.code);
+	var query = `SELECT wishlist_user_playlist_id, wishlist_spotifyauthtoken
+		FROM wishlist_user
+		LEFT JOIN wishlist_spotifydata
+		ON wishlist_spotifydata_id_fk = wishlist_spotifydata_id
+		WHERE wishlist_user_partycode = "`+ req.body.code +`"`;
+		//console.log(query);
+		con.query(query, function(err, result, fields){
+			add_tracks_toPlaylist(result[0].wishlist_spotifyauthtoken,result[0].wishlist_user_playlist_id,req.body.uri, function(result){
+				console.log(result)
+			})
+		})
 })
 
 app.post("/api/authorize", function(req, res){
