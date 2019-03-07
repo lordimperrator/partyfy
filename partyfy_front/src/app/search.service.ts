@@ -24,7 +24,7 @@ export class SearchService {
     console.log(term);
     const _sanitizer = this.sanitizer;
     return new Observable<TrackResult[]>((observer) => {
-      this.http.get('http://' + window.location.origin + ':3000/api/search/' + term).subscribe(
+      this.http.get(window.location.origin + ':3000/api/search/' + term).subscribe(
       data => {
         const results: TrackResult[] = new Array(0);
         console.log(data);
