@@ -292,6 +292,27 @@ function set_Repeat(token,deviceid) {
 	})
 }
 
+function unset_Repeat(token,deviceid, callback) {
+	request({
+		url: "https://api.spotify.com/v1/me/player/repeat",
+		method: "PUT",
+		json: true,
+		headers:
+		{
+			"Content-Type" : "application/json",
+			"Authorization" : "Bearer " + token    
+		},
+		qs:
+		{
+			"device_id" : deviceid,
+			"state": "off"
+		}		
+	}, function(error,response,result){
+		callback();		
+	})
+}
+
+
 function set_Shuffle(token,deviceid) {
 	request({
 		url: "https://api.spotify.com/v1/me/player/shuffle",
@@ -444,15 +465,17 @@ app.post("/api/signup", function(req,res){
 
 app.put("/api/wish", function(req,res){
 	//console.log(req.body.code);
-	var query = `SELECT wishlist_user_playlist_id, wishlist_spotifyauthtoken
+	var query = `SELECT wishlist_user_playlist_id, wishlist_user_device_id, wishlist_spotifyauthtoken
 		FROM wishlist_user
 		LEFT JOIN wishlist_spotifydata
 		ON wishlist_spotifydata_id_fk = wishlist_spotifydata_id
 		WHERE wishlist_user_partycode = "`+ req.body.code +`"`;
 		//console.log(query);
 		con.query(query, function(err, result, fields){
-			add_tracks_toPlaylist(result[0].wishlist_spotifyauthtoken,result[0].wishlist_user_playlist_id,req.body.uri, function(result){
-				console.log(result)
+			add_tracks_toPlaylist(result[0].wishlist_spotifyauthtoken,result[0].wishlist_user_playlist_id,req.body.uri, function(body){
+				unset_Repeat(result[0].wishlist_spotifyauthtoken,result[0].wishlist_user_device_id,function(){
+					set_Repeat(result[0].wishlist_spotifyauthtoken,result[0].wishlist_user_device_id);
+				});				
 			})
 		})
 })
