@@ -13,7 +13,7 @@ import { FormService } from '../form.service';
 })
 export class SigninComponent implements OnInit {
   private code = '';
-  private page = 0;
+  public page = 0;
   constructor(private router: Router, private authService: AuthorizeService, private formService: FormService) { }
   username: String;
   ngOnInit() {

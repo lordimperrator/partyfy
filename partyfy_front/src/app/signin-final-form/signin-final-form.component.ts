@@ -7,7 +7,7 @@ import { FormService } from '../form.service';
   styleUrls: ['./signin-final-form.component.scss']
 })
 export class SigninFinalFormComponent implements OnInit {
-private code: string;
+public code: string;
   constructor(private formservice: FormService) {
     formservice.completeUserSignUp().subscribe(
       (data) =>

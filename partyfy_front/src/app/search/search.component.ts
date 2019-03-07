@@ -12,7 +12,7 @@ import { WishlistService } from '../wishlist.service';
 export class SearchComponent implements OnInit {
   public termSearch = '';
   private signinref = '';
-  private showCode = false;
+  public showCode = false;
   constructor(private searchService: SearchService, @Inject(DOCUMENT) private document: any, private wishlistservice: WishlistService) {
   }
 
