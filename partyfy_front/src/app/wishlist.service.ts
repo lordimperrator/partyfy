@@ -30,7 +30,8 @@ export class WishlistService {
 
   public wishSong(uri: string) {
     console.log(uri);
-    this.http.put('http://localhost:3000/api/wish/', '{"code": "' + this.code + '","uri" : "' + uri + '"}', httpOptions).subscribe(
+    this.http.put('http://' + window.location.origin + ':3000/api/wish/', '{"code": "' + this.code + '","uri" : "' + uri + '"}'
+    , httpOptions).subscribe(
       data => console.log(data)
     );
   }

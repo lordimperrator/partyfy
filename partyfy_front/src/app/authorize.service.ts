@@ -21,7 +21,8 @@ export class AuthorizeService {
     console.log(userauthtoken);
     const _sanitizer = this.sanitizer;
     return new Observable<UserInformation>((observer) => {
-      this.http.post('http://localhost:3000/api/authorize/', '{"token": "' + userauthtoken + '"}', httpOptions).subscribe(
+      this.http.post('http://' + window.location.origin + ':3000/api/authorize/'
+      , '{"token": "' + userauthtoken + '"}', httpOptions).subscribe(
         data => {
           console.log(data);
           observer.next(new UserInformation().deserialize(data));

@@ -65,7 +65,7 @@ export class FormService {
    completeUserSignUp(): Observable<any> {
      console.log(this.partydata.toJsonObject());
     return new Observable<any>((observer) =>
-      this.http.post('http://localhost:3000/api/signup/', this.partydata.toJsonObject(), httpOptions).subscribe(
+      this.http.post('http://' + window.location.origin + ':3000/api/signup/', this.partydata.toJsonObject(), httpOptions).subscribe(
         data => {
           console.log(data);
           observer.next(data);
