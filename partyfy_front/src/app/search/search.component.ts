@@ -43,7 +43,7 @@ export class SearchComponent implements OnInit {
     ' playlist-modify-private user-modify-playback-state';
     this.signinref = 'https://accounts.spotify.com/authorize?response_type=code&client_id=a4053a069ef047e2a10c49745a218670'
     + (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-    '&redirect_uri=' + encodeURIComponent(window.location.origin + ':4200/signin');
+    '&redirect_uri=' + encodeURIComponent(window.location.origin + '/signin');
   }
 
 }
